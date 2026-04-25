@@ -1,16 +1,19 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Educations from "./components/Education";
 import MyInfo from "./components/MyInfo";
 import Experience from "./components/Experince";
 
 function App() {
+  const url = `https://api.aviationstack.com/v1/flights?access_key=${import.meta.env.VITE_API_URL}`;
+  const [flights, setFlights] = useState([]);
+const[isActive,setIsActive]=useState(false);
+
   const initialInfo = {
     name: "",
     email: "",
     phone: "",
   };
-
 
   const [myInfo, setMyInfo] = useState({
     name: "",
@@ -23,7 +26,9 @@ function App() {
     email: "",
     phone: "",
   });
-  console.log(formData);
+  useEffect(() => {
+    // console.log("name berubah")
+  }, [formData.name]);
 
   //listen event and put it on state formData
   function handleChangeMyInfo(event) {
@@ -62,7 +67,6 @@ function App() {
   const handleSubmitMyEducation = () => {
     setMyEducation(formDataEducation);
   };
-  console.log(myEducation);
 
   //experience
 
@@ -81,16 +85,28 @@ function App() {
   });
 
   function handleChangeMyExperince(event) {
-    setFormDataExperince({
-      ...formDataExperince,
-      [event.target.name]: event.target.value,
-    });
+    setFormDataExperince(
+      {
+        ...formDataExperince,
+        [event.target.name]: event.target.value,
+      },
+      console.log(event.target.name),
+    );
   }
 
   const handleSubmitMyExperince = () => {
     setMyExperince(formDataExperince);
   };
-  console.log(myEducation);
+
+  useEffect(() => {
+    fetch(url)
+      .then((response) => response.json())
+
+      .then((data) =>{ 
+        console.log(data.data);
+        setFlights(data.data)})
+      .catch((error) => console.error(error));
+  }, [isActive]);
 
   return (
     <>
@@ -121,10 +137,27 @@ function App() {
         <input type="text" name="company" placeholder="Company" onChange={handleChangeMyExperince} /> <br />
         <input type="email" name="position" placeholder="Position" onChange={handleChangeMyExperince} />
         <br />
+        <p>start date</p>
         <input type="date" name="dateStart" placeholder="Start Date" onChange={handleChangeMyExperince} />
         <br />
+        <p>end date</p>
         <input type="date" name="dateEnd" placeholder="End Date" onChange={handleChangeMyExperince} /> <br />
         <button onClick={handleSubmitMyExperince}>Submit</button>
+      </div>
+
+      <div>
+        <button onClick={()=> setIsActive(isActive => !isActive)}>{`status ${isActive}`}</button>
+        <h3>api flight test</h3>
+        <div>
+          {flights.map((item, index) => {
+            return (
+              <div key={index}>
+                <p>{item.departure.airport}</p>
+                <p>{item.arrival.airport}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );
