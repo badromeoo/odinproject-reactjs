@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import Educations from "./components/Education";
 import MyInfo from "./components/MyInfo";
 import Experience from "./components/Experince";
-
+// const url = `https://api.aviationstack.com/v1/flights?access_key=${import.meta.env.VITE_API_URL}`;
 function App() {
-  const url = `https://api.aviationstack.com/v1/flights?access_key=${import.meta.env.VITE_API_URL}`;
-  const [flights, setFlights] = useState([]);
+  
+// const [flights, setFlights] = useState([]);
 const[isActive,setIsActive]=useState(false);
 
   const initialInfo = {
@@ -98,15 +98,15 @@ const[isActive,setIsActive]=useState(false);
     setMyExperince(formDataExperince);
   };
 
-  useEffect(() => {
-    fetch(url)
-      .then((response) => response.json())
+  // useEffect(() => {
+  //   fetch(url)
+  //     .then((response) => response.json())
 
-      .then((data) =>{ 
-        console.log(data.data);
-        setFlights(data.data)})
-      .catch((error) => console.error(error));
-  }, [isActive]);
+  //     .then((data) =>{ 
+  //       console.log(data.data);
+  //       setFlights(data.data)})
+  //     .catch((error) => console.error(error));
+  // }, [isActive]);
 
   return (
     <>
@@ -148,7 +148,7 @@ const[isActive,setIsActive]=useState(false);
       <div>
         <button onClick={()=> setIsActive(isActive => !isActive)}>{`status ${isActive}`}</button>
         <h3>api flight test</h3>
-        <div>
+        {/* <div>
           {flights.map((item, index) => {
             return (
               <div key={index}>
@@ -157,7 +157,7 @@ const[isActive,setIsActive]=useState(false);
               </div>
             );
           })}
-        </div>
+        </div> */}
       </div>
     </>
   );
